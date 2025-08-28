@@ -67,7 +67,10 @@ loadCellParams = cellParamLabels
 saveCellParams = False
 
 for ruleLabel in loadCellParams:
-    netParams.loadCellParamsRule(label=ruleLabel, fileName = cwd+'/cells/' + ruleLabel + '_cellParams.pkl')
+    if ruleLabel!='PT5B_full':  # PT5B_full is loaded separately below. TODO: Only works for loading UCDavis model, not original
+        netParams.loadCellParamsRule(label=ruleLabel, fileName='../cells/' + ruleLabel + '_cellParams.pkl')
+    else:
+        netParams.loadCellParamsRule(label='PT5B_full', fileName='../cells/Na12HH16HH_TF.json')
 
 #------------------------------------------------------------------------------
 # Specification of cell rules not previously loaded

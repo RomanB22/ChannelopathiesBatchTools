@@ -4,7 +4,7 @@ import os
 
 CWD = os.getcwd()
 
-nameCluster = 'sge_cpu' 
+nameCluster = 'sge_gpu' 
 numSamples = 1
 PercentageChange = 0.5
 minChg = (1-PercentageChange)
@@ -130,7 +130,7 @@ config = {
         'comm_type': 'sfs',
         'host': '###',
         'key': '###',
-        'remote_dir': '/ddn/rbarav/M1_Manifolds',
+        'remote_dir': '/ddn/rbarav/ChannelopathiesGPU',
         'output_path': './batchData/optuna_batch',
         'checkpoint_path': './batchData/ray',
         'run_config': {
