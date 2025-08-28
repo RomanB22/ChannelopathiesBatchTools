@@ -113,7 +113,7 @@ config = {
         'output_path': OUTPUT,
         'checkpoint_path': CHECKPOINT,
         'run_config': {
-            'queue': 'gpu.q',
+            'queue': 'gpu.q\n#$ -l gpu=1',
             'cores': 11,
             'vmem': '150G',
             'realtime': '15:00:00',
