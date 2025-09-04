@@ -155,8 +155,8 @@ cfg.cellmod =  {'IT2': 'HH_reduced',
 				'IT6': 'HH_reduced',
 				'CT6': 'HH_reduced'}
 
-ihQuiet = 1.0/10. # Factor for ih gbar in PT cells at quiet state
-ihMovement = 0.25*1.0/10. # Factor for ih gbar in PT cells at movement state
+ihQuiet = 1.0 # Factor for ih gbar in PT cells at quiet state
+ihMovement = 0.25 # Factor for ih gbar in PT cells at movement state
 cfg.ihModel = 'migliore'  # ih model
 cfg.ihGbar = ihQuiet if cfg.SimulateBaseline else ihMovement # multiplicative factor for ih gbar in PT cells
 cfg.ihGbarZD = None # multiplicative factor for ih gbar in PT cells
