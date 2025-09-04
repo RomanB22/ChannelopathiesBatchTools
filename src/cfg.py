@@ -92,8 +92,8 @@ cfg.recordTime = False
 cfg.recordStep = cfg.dt
 
 cfg.cellParamLabels = ['IT2_reduced', 'IT4_reduced', 'IT5A_reduced', 'IT5B_reduced', 'PT5B_reduced', 'IT6_reduced', 
-                      'CT6_reduced', 'SOM_reduced', 'IT5A_full',  'PV_reduced', 'VIP_reduced', 'NGF_reduced', 
-                      'PT5B_full'] #  # list of cell rules to load from file
+                      'CT6_reduced', 'SOM_reduced', 'IT5A_full',  'PV_reduced', 'VIP_reduced', 'NGF_reduced']#, 
+                      #'PT5B_full'] #  # list of cell rules to load from file
 
 #------------------------------------------------------------------------------
 # Saving
@@ -155,8 +155,8 @@ cfg.cellmod =  {'IT2': 'HH_reduced',
 				'IT6': 'HH_reduced',
 				'CT6': 'HH_reduced'}
 
-ihQuiet = 1.0 # Factor for ih gbar in PT cells at quiet state
-ihMovement = 0.25
+ihQuiet = 1.0/10. # Factor for ih gbar in PT cells at quiet state
+ihMovement = 0.25*1.0/10. # Factor for ih gbar in PT cells at movement state
 cfg.ihModel = 'migliore'  # ih model
 cfg.ihGbar = ihQuiet if cfg.SimulateBaseline else ihMovement # multiplicative factor for ih gbar in PT cells
 cfg.ihGbarZD = None # multiplicative factor for ih gbar in PT cells

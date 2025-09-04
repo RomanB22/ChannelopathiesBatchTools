@@ -324,8 +324,8 @@ def PT5B_Tim(cfg, cwd, saveCellParams):
                 if mechName in ['na12mut']:
                     mech['gbar'] = [g * 0. for g in mech['gbar']] if isinstance(mech['gbar'], list) else mech['gbar'] * 0.
 
-    # for secName in cellRule['secs']:
-    #     print(secName, cellRule['secs'][secName]['mechs']['Ih']['gIhbar'])
+    for secName in cellRule['secs']:
+        print(secName, cellRule['secs'][secName]['mechs']['Ih']['gIhbar'])
 
     # Adapt ih params based on cfg param
     for secName in cellRule['secs']:
