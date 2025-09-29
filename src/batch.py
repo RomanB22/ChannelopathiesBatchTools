@@ -4,19 +4,21 @@ import os
 
 CWD = os.getcwd()
 
-nameCluster = 'sge_gpu' 
-numSamples = 1
+nameCluster = 'ssh_expanse_gpu'
+directorySGE = 'M1_Manifolds' #'ChannelopathiesGPU' M1_Manifolds
+directoryExpanse = 'ChannelopathiesGPU_Last' #'ChannelopathiesGPU' M1_Manifolds
+numSamples = 3000
 PercentageChange = 0.5
 minChg = (1-PercentageChange)
 maxChg = (1+PercentageChange)
 
-params = {'weightLong.TPO': [0.1*minChg, 0.75*maxChg],
-          'weightLong.TVL': [0.1*minChg, 0.75*maxChg],
-          'weightLong.S1': [0.1*minChg, 0.75*maxChg],
-          'weightLong.S2': [0.1*minChg, 0.75*maxChg],
-          'weightLong.cM1': [0.1*minChg, 0.75*maxChg],
-          'weightLong.M2': [0.1*minChg, 0.75*maxChg],
-          'weightLong.OC': [0.1*minChg, 0.75*maxChg],
+params = {'weightLong.TPO': [0.1*minChg, 0.25*maxChg],
+          'weightLong.TVL': [0.1*minChg, 0.25*maxChg],
+          'weightLong.S1': [0.1*minChg, 0.25*maxChg],
+          'weightLong.S2': [0.1*minChg, 0.25*maxChg],
+          'weightLong.cM1': [0.1*minChg, 0.25*maxChg],
+          'weightLong.M2': [0.1*minChg, 0.25*maxChg],
+          'weightLong.OC': [0.1*minChg, 0.25*maxChg],
           'EEGain': [1.*minChg, 1.*maxChg],
           'IEweights.0': [1.*minChg, 1.*maxChg],    ## L2/3+4
           'IEweights.1': [1.*minChg, 1.*maxChg],    ## L5
@@ -24,16 +26,17 @@ params = {'weightLong.TPO': [0.1*minChg, 0.75*maxChg],
           'IIweights.0': [1.*minChg, 1.*maxChg],    ## L2/3+4
           'IIweights.1': [1.*minChg, 1.*maxChg],    ## L5
           'IIweights.2': [1.*minChg, 1.*maxChg],    ## L6
-          'EICellTypeGain.PV': [1.*minChg, 4.*maxChg],    
-          'EICellTypeGain.SOM': [1.*minChg, 4.*maxChg],    
-          'EICellTypeGain.VIP': [1.*minChg, 4.*maxChg],    
-          'EICellTypeGain.NGF': [1.*minChg, 4.*maxChg],
+        #   'EICellTypeGain.PV': [1.*minChg, 4.*maxChg],    
+        #   'EICellTypeGain.SOM': [1.*minChg, 4.*maxChg],    
+        #   'EICellTypeGain.VIP': [1.*minChg, 4.*maxChg],    
+        #   'EICellTypeGain.NGF': [1.*minChg, 4.*maxChg],
         #   'scaleDensity': [0.15]   
           }
 
 # --- Define Constants and Common Settings ---
 
-SSH_KEY_PATH=""
+with open('ExpanseKey.txt') as f:
+    SSH_KEY_PATH = f.readlines()[0]
 
 # Common shell commands for setting up the Python environment
 PYTHON_SETUP_CMDS = """
@@ -109,11 +112,11 @@ config = {
         'comm_type': 'sfs',
         'host': '###',
         'key': '###',
-        'remote_dir': '/ddn/rbarav/ChannelopathiesGPU',
+        'remote_dir': '/ddn/rbarav/M1_Manifolds',
         'output_path': OUTPUT,
         'checkpoint_path': CHECKPOINT,
         'run_config': {
-            'queue': 'gpu.q\n#$ -l gpu=1',
+            'queue': 'gpu.q',
             'cores': 11,
             'vmem': '150G',
             'realtime': '15:00:00',
@@ -130,7 +133,7 @@ config = {
         'comm_type': 'sfs',
         'host': '###',
         'key': '###',
-        'remote_dir': '/ddn/rbarav/ChannelopathiesGPU',
+        'remote_dir': '/ddn/rbarav/M1_Manifolds',
         'output_path': './batchData/optuna_batch',
         'checkpoint_path': './batchData/ray',
         'run_config': {
@@ -151,12 +154,12 @@ config = {
         'comm_type': 'sftp',
         'host': 'grid0',
         'key': '###',
-        'remote_dir': '/ddn/rbarav/M1_Manifolds',
+        'remote_dir': '/ddn/rbarav/%s' % directorySGE,
         'output_path': './batchData/optuna_batch',
-        'checkpoint_path': './batchData/ray_SGEGPU',
+        'checkpoint_path': './batchData/ray_SGEGPU_3',
         'run_config': {
             'queue': 'gpu.q',
-            'cores': 11,
+            'cores': 19,
             'vmem': '100G',
             'realtime': '15:00:00',
             'command': f"""
@@ -172,7 +175,7 @@ mpiexec -n $NSLOTS ./x86_64/special -python -mpi src/init.py
         'comm_type': 'sftp',
         'host': 'grid0',
         'key': '###',
-        'remote_dir': '/ddn/rbarav/M1_Manifolds',
+        'remote_dir': '/ddn/rbarav/%s' % directorySGE,
         'output_path': './batchData/optuna_batch',
         'checkpoint_path': './batchData/ray',
         'run_config': {
@@ -193,7 +196,7 @@ mpiexec -n $NSLOTS -hosts $(hostname) nrniv -python -mpi src/init.py
         'comm_type': 'sftp',
         'host': 'expanse0',
         'key': SSH_KEY_PATH,  # No key needed for this host
-        'remote_dir': '/home/rbaravalle/M1_notGPU',
+        'remote_dir': '/home/rbaravalle/%s' % directoryExpanse,
         'output_path': './batchData/optuna_batch',
         'checkpoint_path': "./batchData/ray_expanseCPU",
         'run_config': {
@@ -217,9 +220,9 @@ time mpirun --bind-to none -n $SLURM_NTASKS ./x86_64/special -mpi -python src/in
         'comm_type': 'sftp',
         'host': 'expanse0',
         'key': SSH_KEY_PATH,  # No key needed for this host
-        'remote_dir': '/home/rbaravalle/M1_Manifolds',
+        'remote_dir': '/home/rbaravalle/%s' % directoryExpanse,
         'output_path': './batchData/optuna_batch',
-        'checkpoint_path': "./batchData/ray_expanseGPU",
+        'checkpoint_path': "./batchData/ray_expanseGPU_channel_Sept162025",
         'run_config': {
             'allocation': 'TG-MED240058',
             'realtime': '10:30:00',

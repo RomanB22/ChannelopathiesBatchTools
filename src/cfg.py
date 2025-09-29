@@ -29,8 +29,8 @@ cfg = specs.SimConfig()
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.preTone = 1000
-cfg.postTone = 1000 # Movement part
+cfg.preTone = 10
+cfg.postTone = 10 # Movement part
 cfg.SimulateBaseline = True
 cfg.addInVivoThalamus = False # To add the sampled spike times from in-vivo recordings on TVL
 cfg.duration = cfg.preTone + cfg.postTone
@@ -58,10 +58,10 @@ cfg.printPopAvgRates = cfg.timeRanges
 cfg.checkErrors = False
 cfg.checkErrorsVerbose = False
 
-cfg.rand123GlobalIndex = None
-cfg.coreneuron = True
-cfg.random123 = True
-cfg.gpu = True
+# cfg.rand123GlobalIndex = None
+# cfg.coreneuron = True
+# cfg.random123 = True
+# cfg.gpu = True
 #------------------------------------------------------------------------------
 # Recording 
 #------------------------------------------------------------------------------
@@ -102,12 +102,12 @@ cfg.version = 104 # version number for the simulation
 cfg.simLabel = 'v%s_tune0' % str(cfg.version)  # label for the simulation
 cfg.saveFolder = cwd+'/batchData/v%s_manualTune' % str(cfg.version)
 cfg.savePickle = False
-cfg.saveJson = False
-cfg.saveDataInclude = ['simData', 'simConfig'] #, 'netParams', 'net']
+cfg.saveJson = True
+cfg.saveDataInclude = ['simData', 'simConfig', 'netParams', 'net']
 cfg.backupCfgFile = None #['cfg.py', 'backupcfg/'] 
 cfg.gatherOnlySimData = False
 cfg.saveCellSecs = False
-cfg.saveCellConns = False
+cfg.saveCellConns = True
 cfg.compactConnFormat = 0
 
 #------------------------------------------------------------------------------
@@ -226,7 +226,7 @@ cfg.scale = 1.0
 cfg.sizeY = 1350.0
 cfg.sizeX = 300.0
 cfg.sizeZ = 300.0
-cfg.scaleDensity = 1.0
+cfg.scaleDensity = 0.15
 cfg.correctBorderThreshold = 150.0
 cfg.normLayers = {'1': [0.0, 0.1], '2': [0.1,0.29], '4': [0.29,0.37], '5A': [0.37,0.47], '5B': [0.47,0.8], '6': [0.8, 1.0]}
 
@@ -272,13 +272,13 @@ cfg.IFullGain = 1.0  # deprecated
 #------------------------------------------------------------------------------
 # Subcellular distribution
 #------------------------------------------------------------------------------
-cfg.addSubConn = True
+cfg.addSubConn = False
 
 #------------------------------------------------------------------------------
 # Long range inputs
 #------------------------------------------------------------------------------
 cfg.addLongConn = True
-cfg.numCellsLong = int(1000 * cfg.scaleDensity) # num of cells per population
+cfg.numCellsLong = 1 if cfg.singleCellPops else int(1000 * cfg.scaleDensity)
 cfg.noiseLong = 1.0  # firing rate random noise
 cfg.delayLong = 5.0  # (ms)
 factor = 1

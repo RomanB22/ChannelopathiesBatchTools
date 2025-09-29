@@ -36,7 +36,7 @@ sim.setupRecording()
 
 #------------------------------------------------------------------------------
 # Simulation option 1: standard
-sim.runSim()                              # run parallel Neuron simulation (calling func to modify mechs)
+sim.simulate()                              # run parallel Neuron simulation (calling func to modify mechs)
 # # Simulation option 2: interval function to modify mechanism params
 #TODO: Check that it works properly on CoreNEURON
 # print(cfg.modifyMechs)
